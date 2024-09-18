@@ -1,0 +1,24 @@
+/* src/LogAlert.css */
+.alert {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+  }
+  
+  /* High severity - Red background */
+  .alert-high {
+    background-color: red;
+  }
+  
+  /* Medium severity - Orange background */
+  .alert-medium {
+    background-color: orange;
+  }
+  
+  /* Low severity - Green background */
+  .alert-low {
+    background-color: green;
+  }
+  
