@@ -10,7 +10,7 @@ import LogEntry from './components/LogEntry';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <LogEntry />
+    <LogViewer />
   </React.StrictMode>
 );
 
