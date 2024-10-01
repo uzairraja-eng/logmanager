@@ -1,145 +1,34 @@
 
 
-
-// import React, { useState, useEffect } from 'react';
-
-// const LogViewer = () => {
-//   const [logs, setLogs] = useState([]);
-//   const [filteredLogs, setFilteredLogs] = useState([]);
-//   const [filterType, setFilterType] = useState('');
-//   const [filterSeverity, setFilterSeverity] = useState('');
-//   const [socket, setSocket] = useState(null);
-
-//   // Fetch initial logs and setup WebSocket connection
-//   useEffect(() => {
-//     fetchLogs();
-//     connectWebSocket(); // Connect WebSocket for real-time updates
-//   }, []);
-
-//   // Apply filters when filterType, filterSeverity, or logs change
-//   useEffect(() => {
-//     applyFilters();
-//   }, [filterType, filterSeverity, logs]);
-
-//   // Fetch logs from the server
-//   const fetchLogs = async () => {
-//     try {
-//       const response = await fetch('http://localhost:4000/api/logs');
-//       if (!response.ok) {
-//         throw new Error('Failed to fetch logs');
-//       }
-//       const data = await response.json();
-//       setLogs(data);
-//     } catch (error) {
-//       console.error('Error fetching logs:', error);
-//     }
-//   };
-
-//   // Connect WebSocket for real-time log updates
-//   const connectWebSocket = () => {
-//     const ws = new WebSocket('ws://localhost:4000'); // Replace with your WebSocket URL
-//     setSocket(ws);
-
-//     ws.onmessage = (event) => {
-//       const newLog = JSON.parse(event.data);
-//       setLogs((prevLogs) => [newLog, ...prevLogs]); // Prepend the new log
-//     };
-
-//     ws.onclose = () => {
-//       console.log('WebSocket connection closed');
-//     };
-
-//     ws.onerror = (error) => {
-//       console.error('WebSocket error:', error);
-//     };
-//   };
-
-//   // Apply filter based on log type and severity
-//   const applyFilters = () => {
-//     let filtered = logs;
-
-//     if (filterType) {
-//       filtered = filtered.filter((log) => log.type === filterType);
-//     }
-
-//     if (filterSeverity) {
-//       filtered = filtered.filter((log) => log.severity === filterSeverity);
-//     }
-
-//     setFilteredLogs(filtered);
-//   };
-
-//   return (
-//     <div>
-//       <h2>Logs List</h2>
-
-//       {/* Filters */}
-//       <div>
-//         <label>
-//           Filter by Type:
-//           <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
-//             <option value="">All</option>
-//             <option value="Error">Error</option>
-//             <option value="info">Info</option>
-//             <option value="warning">Warning</option>
-//           </select>
-//         </label>
-
-//         <label>
-//           Filter by Severity:
-//           <select value={filterSeverity} onChange={(e) => setFilterSeverity(e.target.value)}>
-//             <option value="">All</option>
-//             <option value="High">High</option>
-//             <option value="Medium">Medium</option>
-//             <option value="Low">Low</option>
-//           </select>
-//         </label>
-//       </div>
-
-//       <ul>
-//         {filteredLogs.map((log) => (
-//           <li key={log.id}>
-//             {new Date(log.timestamp).toLocaleString()}: {log.type} - {log.message} ({log.severity})
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default LogViewer;
-
-
-
-
-
-
+// // client/src/components/LogViewer.js
 // import React, { useState, useEffect } from 'react';
 // import Login from './Login';
 
 // const LogViewer = () => {
-//   const [logs, setLogs] = useState([]);
-//   const [filteredLogs, setFilteredLogs] = useState([]);
-//   const [filterType, setFilterType] = useState('');
-//   const [filterSeverity, setFilterSeverity] = useState('');
-//   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
-//   const [socket, setSocket] = useState(null);
 
-//   // Fetch initial logs and setup WebSocket connection
+//   // // Clear localStorage temporarily for debugging
+//   // localStorage.removeItem('authToken'); // Comment this line out after debugging
+
+//   // Check for authToken in localStorage, initialize with '' if not found
+//   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
+
+//   // Log the initial state of authToken to verify its value
+//   useEffect(() => {
+//     console.log('Initial authToken value:', authToken);
+//   }, []);
+
+//   // Fetch logs only if authToken is present
 //   useEffect(() => {
 //     if (authToken) {
+//       console.log('Authenticated! Fetching logs...');
 //       fetchLogs();
-//       connectWebSocket();
 //     }
 //   }, [authToken]);
 
-//   useEffect(() => {
-//     applyFilters();
-//   }, [filterType, filterSeverity, logs]);
-
+//   // Fetch logs from API
 //   const fetchLogs = async () => {
 //     try {
-//       const response = await fetch('http://localhost:4000/api/logs', {
+//       const response = await fetch('http://meteor-hickory-scapula.glitch.me/api/logs', {
 //         headers: { Authorization: `Bearer ${authToken}` },
 //       });
 //       if (!response.ok) {
@@ -152,24 +41,13 @@
 //     }
 //   };
 
-//   const connectWebSocket = () => {
-//     const ws = new WebSocket('ws://localhost:4000');
-//     setSocket(ws);
+//   // State and functions for logs and filtering
+//   const [logs, setLogs] = useState([]);
+//   const [filteredLogs, setFilteredLogs] = useState([]);
+//   const [filterType, setFilterType] = useState('');
+//   const [filterSeverity, setFilterSeverity] = useState('');
 
-//     ws.onmessage = (event) => {
-//       const newLog = JSON.parse(event.data);
-//       setLogs((prevLogs) => [newLog, ...prevLogs]);
-//     };
-
-//     ws.onclose = () => {
-//       console.log('WebSocket connection closed');
-//     };
-
-//     ws.onerror = (error) => {
-//       console.error('WebSocket error:', error);
-//     };
-//   };
-
+//   // Function to apply filters to the logs
 //   const applyFilters = () => {
 //     let filtered = logs;
 //     if (filterType) {
@@ -181,19 +59,26 @@
 //     setFilteredLogs(filtered);
 //   };
 
+//   // Apply filters whenever logs, filterType, or filterSeverity changes
+//   useEffect(() => {
+//     applyFilters();
+//   }, [filterType, filterSeverity, logs]);
+
+//   // Display Login page if authToken is not present, otherwise display logs
 //   return (
 //     <div>
 //       {authToken ? (
 //         <div>
 //           <h2>Logs List</h2>
+//           {/* Filter Controls */}
 //           <div>
 //             <label>
 //               Filter by Type:
 //               <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
 //                 <option value="">All</option>
 //                 <option value="Error">Error</option>
-//                 <option value="info">Info</option>
-//                 <option value="warning">Warning</option>
+//                 <option value="Info">Info</option>
+//                 <option value="Warning">Warning</option>
 //               </select>
 //             </label>
 //             <label>
@@ -206,6 +91,7 @@
 //               </select>
 //             </label>
 //           </div>
+//           {/* Render Logs */}
 //           <ul>
 //             {filteredLogs.map((log) => (
 //               <li key={log.id}>
@@ -215,6 +101,7 @@
 //           </ul>
 //         </div>
 //       ) : (
+//         // Show the Login component if no authToken
 //         <Login setAuthToken={setAuthToken} />
 //       )}
 //     </div>
@@ -225,32 +112,34 @@
 
 
 
-// client/src/components/LogViewer.js
-import React, { useState, useEffect } from 'react';
+
+//for netlify
+
+import React, { useState, useEffect, useCallback } from 'react';
 import Login from './Login';
 
 const LogViewer = () => {
-  // Clear localStorage temporarily for debugging
-  localStorage.removeItem('authToken'); // Comment this line out after debugging
+  // Remove this line after debugging to avoid clearing authToken each time.
+  // localStorage.removeItem('authToken'); // Commented out after debugging
 
   // Check for authToken in localStorage, initialize with '' if not found
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
 
+  // State and functions for logs and filtering
+  const [logs, setLogs] = useState([]);
+  const [filteredLogs, setFilteredLogs] = useState([]);
+  const [filterType, setFilterType] = useState('');
+  const [filterSeverity, setFilterSeverity] = useState('');
+
   // Log the initial state of authToken to verify its value
   useEffect(() => {
     console.log('Initial authToken value:', authToken);
-  }, []);
-
-  // Fetch logs only if authToken is present
-  useEffect(() => {
-    if (authToken) {
-      console.log('Authenticated! Fetching logs...');
-      fetchLogs();
-    }
-  }, [authToken]);
+  }, [authToken]); // Add 'authToken' as a dependency
 
   // Fetch logs from API
-  const fetchLogs = async () => {
+  const fetchLogs = useCallback(async () => {
+    if (!authToken) return;
+
     try {
       const response = await fetch('http://meteor-hickory-scapula.glitch.me/api/logs', {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -263,16 +152,15 @@ const LogViewer = () => {
     } catch (error) {
       console.error('Error fetching logs:', error);
     }
-  };
+  }, [authToken]); // Add 'authToken' as a dependency for fetchLogs
 
-  // State and functions for logs and filtering
-  const [logs, setLogs] = useState([]);
-  const [filteredLogs, setFilteredLogs] = useState([]);
-  const [filterType, setFilterType] = useState('');
-  const [filterSeverity, setFilterSeverity] = useState('');
+  // Fetch logs only if authToken is present
+  useEffect(() => {
+    fetchLogs();
+  }, [authToken, fetchLogs]); // Add 'authToken' and 'fetchLogs' as dependencies
 
   // Function to apply filters to the logs
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = logs;
     if (filterType) {
       filtered = filtered.filter((log) => log.type === filterType);
@@ -281,12 +169,12 @@ const LogViewer = () => {
       filtered = filtered.filter((log) => log.severity === filterSeverity);
     }
     setFilteredLogs(filtered);
-  };
+  }, [logs, filterType, filterSeverity]); // Add dependencies for logs, filterType, and filterSeverity
 
   // Apply filters whenever logs, filterType, or filterSeverity changes
   useEffect(() => {
     applyFilters();
-  }, [filterType, filterSeverity, logs]);
+  }, [logs, filterType, filterSeverity, applyFilters]); // Add 'applyFilters' as a dependency
 
   // Display Login page if authToken is not present, otherwise display logs
   return (
