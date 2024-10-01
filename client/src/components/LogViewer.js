@@ -252,7 +252,7 @@ const LogViewer = () => {
   // Fetch logs from API
   const fetchLogs = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/logs', {
+      const response = await fetch('http://meteor-hickory-scapula.glitch.me/api/logs', {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       if (!response.ok) {
