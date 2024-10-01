@@ -214,9 +214,10 @@ app.get('/api/logs', protectRoute, async (req, res) => {
 });
 
 // Start the server
-const server = app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
+console.log('Environment Variables:', process.env);
 
 // WebSocket setup
 const wss = new Server({ server }); // WebSocket Server
