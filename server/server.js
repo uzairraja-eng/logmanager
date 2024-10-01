@@ -158,7 +158,8 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Setup CORS, body-parser, and MongoDB
-app.use(cors());
+app.use(cors({ origin: 'https://logmanager-frontend.netlify.app' }));
+
 app.use(bodyParser.json());
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/logsdb';
