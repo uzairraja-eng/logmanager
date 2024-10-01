@@ -161,6 +161,9 @@ const PORT = process.env.PORT || 4000;
 app.use(cors({ origin: 'https://logmanager-frontend.netlify.app' }));
 
 app.use(bodyParser.json());
+app.get('/', (req, res) => {
+  res.send('Server is running correctly!');
+});
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/logsdb';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
